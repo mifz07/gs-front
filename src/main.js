@@ -1,16 +1,11 @@
 import { createApp } from 'vue'
 import './style.css'
 import "./flags.css";
-import "primeicons/primeicons.css";
-import "primeflex/primeflex.css";
 
 // import Lara from './presets/lara'; 
 
 // import the package
 import VueAwesomePaginate from "vue-awesome-paginate";
-
-// import the necessary css file
-// import "vue-awesome-paginate/dist/style.css";
 
 import store from './store';
 
@@ -19,6 +14,13 @@ import router from './router/index.js';
 
 import PrimeVue from 'primevue/config';
 import Tailwind from 'primevue/passthrough/tailwind';
+
+import "primeicons/primeicons.css";
+import "primeflex/primeflex.css";
+import "primeflex/themes/primeone-light.css";
+
+// import the necessary css file
+import "vue-awesome-paginate/dist/style.css";
 
 import AutoComplete from 'primevue/autocomplete';
 import Accordion from 'primevue/accordion';
@@ -135,7 +137,7 @@ if(api_url[1] == '//localhost'){
 app.config.globalProperties.apiUrl = apiUrl;
 app.use(store);
 app.use(router);
-app.use(PrimeVue, { unstyled: false, pt: Tailwind, ripple: true  });
+app.use(PrimeVue, { unstyled: true, pt: Tailwind, ripple: true  });
 app.use(ConfirmationService);
 app.use(ToastService);
 app.use(DialogService);

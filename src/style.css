@@ -39,4 +39,6 @@
     transition: margin-left 0.3s;
     box-sizing: border-box;
     font-size: 12px !important;
+    background-color: white;
+    color: black;
 }

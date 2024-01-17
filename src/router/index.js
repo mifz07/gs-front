@@ -1,7 +1,7 @@
 import { createWebHistory, createRouter } from "vue-router";
 import NotFound from '../views/NotFound.vue';
 import Dashboard from '../views/dashboard/Dashboard.vue';
-import LoginPage from '../views/LoginPage.vue';
+import LoginPage from '../views/LoginComponent.vue';
 
 // MEETING ROOM 
 import RoomManagement from '../views/meetingroom/RoomManagement.vue';

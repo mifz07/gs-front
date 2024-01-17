@@ -1,40 +1,40 @@
 
 <template>
-    <div class="card flex justify-content-center">
+    <div class="tw-card tw-flex tw-justify-content-center">
         <div 
-            class="layout-sidebar text-sm" 
+            class="layout-sidebar tw-text-sm" 
             :class="{ 'layout-sidebar-active': visible }" 
             @mouseover="visible = true"
             @mouseleave="visible = false"
         >
-            <div class="sidebar-logo h-auto drop-shadow-md">
-                <div class="w-full pb-1">
-                    <div class="flex justify-center items-center">
-                        <img src="https://thispersondoesnotexist.com/" alt="" class="rounded-full w-[80px]">
+            <div class="sidebar-logo tw-h-auto tw-drop-shadow-md">
+                <div class="tw-w-full tw-pb-1">
+                    <div class="tw-flex tw-justify-center tw-items-center">
+                        <img src="https://thispersondoesnotexist.com/" alt="" class="tw-rounded-full tw-w-[80px]">
                     </div>
-                    <div class="text-white text-center font-semibold">
+                    <div class="tw-text-white tw-text-center tw-font-semibold">
                         Assalamualaikum
                     </div>
                 </div>
             </div>
             <div class="">
-                <ul role="menu" class="text-white list-none">
+                <ul role="menu" class="tw-text-white list-none">
                     <li 
                         v-for="menu in list_menu" :key="menu.label" 
-                        class="hover:bg-sky-500 cursor-pointer px-4 transition-duration-150 transition-colors p-ripple"
-                        :class="{ 'active bg-sky-700' : activeIndex == menu.label || ( activeIndex == '' && menu.label == 'Dashboard' ) || menu.label == pageName}"
+                        class="hover:tw-bg-sky-500 tw-cursor-pointer tw-px-4 tw-transition-duration-150 tw-transition-colors p-ripple"
+                        :class="{ 'active tw-bg-sky-700' : activeIndex == menu.label || ( activeIndex == '' && menu.label == 'Dashboard' ) || menu.label == pageName}"
                     >
                         <router-link :to="''+menu.link">
                             <a 
                                 v-if="!menu.list.child"
                                 v-ripple
-                                class="w-full transition-duration-150 transition-colors p-ripple"
+                                class="tw-w-full tw-transition-duration-150 tw-transition-colors p-ripple"
                                 @click="activeIndex = menu.label, childIndex = ''"
                             >
                                 
-                                <div class="flex justify-between leading-[3.25em]" :class="menu.label" @click="logOut(menu.label)">
-                                    <div class="flex-1"><span class="ml-2">{{ menu.label }}</span></div>
-                                    <div class="flex-none"><span :class="menu.icon"></span></div>
+                                <div class="tw-flex tw-justify-between tw-leading-[3.25em]" :class="menu.label" @click="logOut(menu.label)">
+                                    <div class="tw-flex-1"><span class="tw-ml-2">{{ menu.label }}</span></div>
+                                    <div class="tw-flex-none"><span :class="menu.icon"></span></div>
                                 </div>
                             </a>
                         </router-link>
@@ -49,29 +49,29 @@
                                 leaveActiveClass: 'slideup',
                                 hideOnOutsideClick: true
                             }"
-                            class="w-full transition-duration-250 transition-colors p-ripple"
+                            class="tw-w-full tw-transition-duration-250 tw-transition-colors p-ripple"
                         >
                             
-                            <div class="flex justify-between leading-[3.25em]">
-                                <div class="flex-1"><span class="ml-2">{{ menu.label }}</span></div>
-                                <div class="flex-none"><span :class="menu.icon"></span></div>
+                            <div class="tw-flex tw-justify-between tw-leading-[3.25em]">
+                                <div class="tw-flex-1"><span class="tw-ml-2">{{ menu.label }}</span></div>
+                                <div class="tw-flex-none"><span :class="menu.icon"></span></div>
                             </div>
                         </a>
 
                         <ul 
                             v-if="menu.list.child"
-                            class="list-none pl-3 pr-1 m-0 hidden overflow-y-hidden transition-all transition-duration-400 ease-in-out animation-duration-400 leading-[5px] pb-2"
+                            class="tw-list-none tw-pl-3 tw-pr-1 tw-m-0 hidden overflow-y-hidden transition-all transition-duration-400 ease-in-out animation-duration-400 tw-leading-[5px] tw-pb-2"
                             :class="{ 'hidden': !visible }"
                         >
                             <li 
                                 v-for="item in menu.list.child" :key="item.label"
-                                class="hover:bg-sky-700 hover:shadow-md hover:translate-x-1 hover:rounded-md mb-1 mt-1"
-                                :class="{ 'bg-sky-700 translate-x-1 rounded-md' : childIndex == item.id || pageLink == item.link }"
+                                class="hover:tw-bg-sky-700 hover:tw-shadow-md hover:tw-translate-x-1 hover:tw-rounded-md tw-mb-1 tw-mt-1"
+                                :class="{ 'tw-bg-sky-700 tw-translate-x-1 tw-rounded-md' : childIndex == item.id || pageLink == item.link }"
                             >
                                 <router-link :to="''+item.link">
                                     <a 
                                         v-ripple 
-                                        class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                                        class="tw-flex tw-align-items-center tw-cursor-pointer tw-p-3 tw-border-round tw-text-700 tw-hover:surface-100 tw-transition-duration-150 tw-transition-colors p-ripple"
                                         @click="activeIndex = menu.label, childIndex = item.id"
                                     >
                                         {{ item.label }}

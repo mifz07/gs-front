@@ -1,27 +1,27 @@
 
 <template>
-    <div class="relative">
-        <div class="grid grid-cols-4 gap-3 h-auto">
-            <div class="w-[22%] p-3 bg-white rounded-lg drop-shadow-lg relative">
-                <div class="text-sm text-gray-400 mb-2 text-semibold">Guest Book</div>
+    <div class="tw-relative">
+        <div class="tw-grid tw-grid-cols-4 tw-gap-3 tw-h-auto">
+            <div class="tw-p-3 tw-bg-white tw-rounded-lg tw-drop-shadow-lg tw-relative">
+                <div class="tw-text-sm tw-text-gray-400 tw-mb-2 tw-text-semibold">Guest Book</div>
                 <div class="">
                     <Chart type="doughnut" :data="chartDataGS" :options="chartOptionsGS" class="w-full" />
                 </div>
             </div>
-            <div class="w-[22%] p-3 bg-white rounded-lg drop-shadow-lg relative">
-                <div class="text-sm text-gray-400 mb-2 text-semibold">Meeting Room</div>
+            <div class="tw-p-3 tw-bg-white tw-rounded-lg tw-drop-shadow-lg tw-relative">
+                <div class="tw-text-sm tw-text-gray-400 tw-mb-2 tw-text-semibold">Meeting Room</div>
                 <div class="">
                     <Chart type="pie" :data="chartDataGS" :options="chartOptionsGS" class="w-full" />
                 </div>
             </div>
-            <div class="w-[22%] p-3 bg-white rounded-lg drop-shadow-lg relative">
-                <div class="text-sm text-gray-400 mb-2 text-semibold">Meeting Room</div>
+            <div class="tw-p-3 tw-bg-white tw-rounded-lg tw-drop-shadow-lg tw-relative">
+                <div class="tw-text-sm tw-text-gray-400 tw-mb-2 tw-text-semibold">Meeting Room</div>
                 <div class="">
                     <Chart type="bar" :data="charDataBar" :options="chartOptionsBar" class="w-full" />
                 </div>
             </div>
-            <div class="w-[22%] bg-white rounded-lg drop-shadow-lg relative">
-                <div class="text-sm text-gray-400 mb-2 text-semibold">Meeting Room</div>
+            <div class="tw-bg-white tw-rounded-lg tw-drop-shadow-lg tw-relative">
+                <div class="tw-text-sm tw-text-gray-400 tw-mb-2 tw-text-semibold">Meeting Room</div>
                 <div class="">
                     <Chart type="polarArea" :data="charDataPolar" :options="chartOptionsPolar" class="w-full" />
                 </div>
@@ -29,11 +29,11 @@
             
         </div>
 
-        <div class="mt-[30px] block">
-            <div class="w-full h-50vh p-2 bg-white rounded-lg drop-shadow-lg relative">
-                <div class="text-sm text-gray-400 mb-2 text-semibold">Guest Book</div>
+        <div class="tw-mt-[30px] tw-block">
+            <div class="tw-w-full tw-h-50vh tw-p-2 tw-bg-white tw-rounded-lg tw-drop-shadow-lg tw-tw-relative">
+                <div class="tw-text-sm tw-text-gray-400 tw-mb-2 tw-text-semibold">Guest Book</div>
                 <div class="">
-                    <Chart type="line" :data="chartDataLine" :options="chartOptionsLine" class="w-full" />
+                    <Chart type="line" :data="chartDataLine" :options="chartOptionsLine" class="tw-w-full" />
                 </div>
             </div>
         </div>

@@ -21,7 +21,7 @@
 
   import NavComponent from './views/NavComponent.vue';
   import SideComponent from './views/SideComponent.vue';
-  import LoginPage from './views/LoginPage.vue';
+  import LoginPage from './views/LoginComponent.vue';
   import {ref} from 'vue';
 
   // const pathName = ref(null);

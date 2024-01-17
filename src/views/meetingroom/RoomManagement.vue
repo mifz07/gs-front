@@ -1,16 +1,16 @@
 <template>
-    <div class="grid grid-1 gap-4">
-        <h3 class="text-gray-500 text-[25px] font-bold">
+    <div class="tw-grid tw-grid-1 tw-gap-4">
+        <h3 class="tw-text-gray-500 tw-text-[25px] tw-font-bold">
             Meeting Room Management
         </h3>
     </div>
-    <div class="mt-1">
-        <small class="text-gray-400">
+    <div class="tw-mt-1">
+        <small class="tw-text-gray-400">
             <i>Meeting Room/Meeting Room Managament</i>
         </small>
     </div>
 
-    <div class="card">
+    <div class="card tw-hidden">
         <DataTable :value="list_room" lazy stripedRows :size="small" :rows="5" :rowsPerPageOptions="[5, 10, 20, 50]" tableStyle="min-width: 50rem">
             <Column field="room_name" header="Name"></Column>
             <Column field="floor" header="Floor"></Column>
@@ -29,24 +29,24 @@
         </DataTable>
     </div>
 
-    <div class="mt-3 pagination">
-        <!-- <Paginator :rows="10" :totalRecords="20" :rowsPerPageOptions="[10, 20, 30]" onPageChange="handlePageChange"></Paginator> -->
+    <div class="mt-3">
+        <Table 
+            :list_data="list_room" 
+            :list_header="list_header" 
+            :currentPage="currentPage" 
+            :perPage="perPage"
+            :totalItems="totalItems"
+            @change-page="handlePage"
+        ></Table>
     </div>
 
-    <div class="mt-3">
-        <vue-awesome-paginate :total-items="totalItems"
-            v-model="currentPage"
-            :items-per-page="perPage"
-            :max-pages-shown="5"
-            :on-click="handlePageChange" />
-    </div>
 </template>
 
 <script>
 import axios from 'axios';
 import { ref } from 'vue';
 import authHeader from "../../service/auth-header";
-
+import Table from "../table/TableComponent.vue";
 
 // import { FwbPagination } from 'flowbite-vue'
 import Paginator from 'primevue/paginator';
@@ -60,6 +60,7 @@ export default {
     name: 'RoomManagement',
     components: {
         Paginator,
+        Table
         // Paginate
         // TailwindPagination
         // VueAwesomePaginate
@@ -74,6 +75,7 @@ export default {
             pageNumber: 1,
             filter: ref(),
             list_room: ref({'data' : []}),
+            list_header: {},
             // total: '',
             type: '',
             // perPage: 5, // adjust perPage as needed
@@ -94,17 +96,18 @@ export default {
         // console.log(this.apiUrl);
     },
     mounted(){
-        this.handlePageChange(1)
+        this.handlePage(1)
     },
     methods: {
-        handlePageChange(page) {
-            this.page = this.currentPage
+        handlePage(page) {
+            console.log('ini dari emit', page)
+            this.currentPage = page
             axios({
                     method: 'get',
                     url: this.apiUrl + 'meeting_room',
                     headers: authHeader(), 
                     params: {
-                        page: this.page,
+                        page: this.currentPage,
                         perpage: this.perPage,
                         keyword: this.keyword
                     }
@@ -112,9 +115,8 @@ export default {
                 .then((response) => {
                     this.laravelData = response.data.data;
                     this.list_room = response.data.data;
-                    // list_rooms.value = response.data.data;
+                    this.list_header = response.data.header;
                     this.totalItems = response.data.total;
-                    // console.log(this.list_room)
             })
         },
     }
@@ -123,37 +125,5 @@ export default {
 </script>
 
 <style>
-  .pagination-container {
-    display: flex;
-    column-gap: 10px;
-  }
-  .paginate-buttons {
-    height: 40px;
-    width: 40px;
-    border-radius: 20px;
-    cursor: pointer;
-    background-color: rgb(242, 242, 242);
-    border: 0.5px solid rgb(104, 93, 93);
-    color: #000000 !important;
-    padding-left: 1em !important;
-    padding-right: 1em !important;
-    justify-content: center !important;
-  }
-  .paginate-buttons:hover {
-    background-color: #00c3ff !important;
-    color: white impr !important;
-    /* border-color: #34ffdd !important; */
-  }
-  .active-page {
-    background-color: #0092f3 !important;
-    border: 1px solid #005d9b !important;
-    color: white !important;
-  }
-  .active-page:hover {
-    background-color: #2988c8 !important;
-  }
-  .text-green-500 {
-    --tw-text-opacity: 1;
-    color: rgb(34 197 94 / var(--tw-text-opacity)) !important;
-}
+  
 </style>
