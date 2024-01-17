@@ -32,7 +32,7 @@
                                 @click="activeIndex = menu.label, childIndex = ''"
                             >
                                 
-                                <div class="flex justify-between leading-[3.25em]" :class="menu.label">
+                                <div class="flex justify-between leading-[3.25em]" :class="menu.label" @click="logOut(menu.label)">
                                     <div class="flex-1"><span class="ml-2">{{ menu.label }}</span></div>
                                     <div class="flex-none"><span :class="menu.icon"></span></div>
                                 </div>
@@ -111,9 +111,18 @@ export default {
             this.pageName = curRoute.name
             this.pageLink = curRoute.path
             this.activeIndex = curRoute.name
-            console.log(curRoute)
+            // console.log(localStorage.getItem('user'))
         },
     },
+    methods:{
+        logOut(label) {
+            if(label == 'Logout'){
+                console.log(label);
+                this.$store.dispatch('auth/logout');
+                this.$router.push('/login');
+            }
+        }
+    }
 }
 </script>
 

@@ -1,32 +1,42 @@
 
 <template>
+    <div class="relative">
+        <div class="grid grid-cols-4 gap-3 h-auto">
+            <div class="w-[22%] p-3 bg-white rounded-lg drop-shadow-lg relative">
+                <div class="text-sm text-gray-400 mb-2 text-semibold">Guest Book</div>
+                <div class="">
+                    <Chart type="doughnut" :data="chartDataGS" :options="chartOptionsGS" class="w-full" />
+                </div>
+            </div>
+            <div class="w-[22%] p-3 bg-white rounded-lg drop-shadow-lg relative">
+                <div class="text-sm text-gray-400 mb-2 text-semibold">Meeting Room</div>
+                <div class="">
+                    <Chart type="pie" :data="chartDataGS" :options="chartOptionsGS" class="w-full" />
+                </div>
+            </div>
+            <div class="w-[22%] p-3 bg-white rounded-lg drop-shadow-lg relative">
+                <div class="text-sm text-gray-400 mb-2 text-semibold">Meeting Room</div>
+                <div class="">
+                    <Chart type="bar" :data="charDataBar" :options="chartOptionsBar" class="w-full" />
+                </div>
+            </div>
+            <div class="w-[22%] bg-white rounded-lg drop-shadow-lg relative">
+                <div class="text-sm text-gray-400 mb-2 text-semibold">Meeting Room</div>
+                <div class="">
+                    <Chart type="polarArea" :data="charDataPolar" :options="chartOptionsPolar" class="w-full" />
+                </div>
+            </div>
+            
+        </div>
 
-    <div class="grid grid-cols-4 gap-3">
-        <div class="w-[22%] p-3 bg-white rounded-lg drop-shadow-lg relative">
-            <div class="text-sm text-gray-400 mb-2 text-semibold">Guest Book</div>
-            <div class="">
-                <Chart type="doughnut" :data="chartDataGS" :options="chartOptionsGS" class="w-full" />
+        <div class="mt-[30px] block">
+            <div class="w-full h-50vh p-2 bg-white rounded-lg drop-shadow-lg relative">
+                <div class="text-sm text-gray-400 mb-2 text-semibold">Guest Book</div>
+                <div class="">
+                    <Chart type="line" :data="chartDataLine" :options="chartOptionsLine" class="w-full" />
+                </div>
             </div>
         </div>
-        <div class="w-[22%] p-3 bg-white rounded-lg drop-shadow-lg relative">
-            <div class="text-sm text-gray-400 mb-2 text-semibold">Meeting Room</div>
-            <div class="">
-                <Chart type="pie" :data="chartDataGS" :options="chartOptionsGS" class="w-full" />
-            </div>
-        </div>
-        <div class="w-[22%] p-3 bg-white rounded-lg drop-shadow-lg relative">
-            <div class="text-sm text-gray-400 mb-2 text-semibold">Meeting Room</div>
-            <div class="">
-                <Chart type="bar" :data="charDataBar" :options="chartOptionsBar" class="w-full" />
-            </div>
-        </div>
-        <div class="w-[22%] relative">
-        </div>
-        
-    </div>
-
-    <div class="card flex justify-content-center">
-        <!-- <Chart type="doughnut" :data="chartData" :options="chartOptions" class="w-[100px]" /> -->
     </div>
 </template>
 
@@ -38,12 +48,20 @@ onMounted(() => {
     chartOptionsGS.value = setChartOptionsGS();
     charDataBar.value = setChartDataBar();
     chartOptionsBar.value = setChartOptionsBar();
+    chartDataPolar.value = setChartDataPolar();
+    chartOptionsPolar.value = setChartOptionsPolar();
+    chartDataLine.value = setChartDataLine();
+    charOptionsLine.value = setChartOptionsLine();
 });
 
 const chartDataGS = ref();
 const chartOptionsGS = ref(null);
 const charDataBar = ref();
 const chartOptionsBar = ref(null);
+const chartDataPolar = ref();
+const chartOptionsPolar = ref(null);
+const chartDataLine = ref();
+const charOptionsLine = ref(null);
 
 // doughnut and pie
 const setChartDataGS = () => {
@@ -168,6 +186,129 @@ const setChartOptionsBar = () =>  {
                     color: textColorSecondary
                 },
                 grid: {
+                    color: surfaceBorder
+                }
+            }
+        }
+    };
+}
+
+//polar area
+const setChartDataPolar = () => {
+    const documentStyle = getComputedStyle(document.documentElement);
+
+    return {
+        datasets: [
+            {
+                data: [11, 16, 7, 3, 14],
+                backgroundColor: [
+                    documentStyle.getPropertyValue('--red-500'),
+                    documentStyle.getPropertyValue('--green-500'),
+                    documentStyle.getPropertyValue('--yellow-500'),
+                    documentStyle.getPropertyValue('--bluegray-500'),
+                    documentStyle.getPropertyValue('--blue-500')
+                ],
+                label: 'My dataset'
+            }
+        ],
+        labels: ['Red', 'Green', 'Yellow', 'Grey', 'Blue']
+    };
+};
+const setChartOptionsPolar = () => {
+    const documentStyle = getComputedStyle(document.documentElement);
+    const textColor = documentStyle.getPropertyValue('--text-color');
+    const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+
+    return {
+        plugins: {
+            legend: {
+                labels: {
+                    color: textColor
+                }
+            }
+        },
+        scales: {
+            r: {
+                grid: {
+                    color: surfaceBorder
+                }
+            }
+        }
+    };
+}
+
+// line char
+const setChartDataLine = () => {
+    const documentStyle = getComputedStyle(document.documentElement);
+
+    return {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        datasets: [
+            {
+                label: 'Dataset 1',
+                fill: false,
+                borderColor: documentStyle.getPropertyValue('--blue-500'),
+                yAxisID: 'y',
+                tension: 0.4,
+                data: [65, 59, 80, 81, 56, 55, 10]
+            },
+            {
+                label: 'Dataset 2',
+                fill: false,
+                borderColor: documentStyle.getPropertyValue('--green-500'),
+                yAxisID: 'y1',
+                tension: 0.4,
+                data: [28, 48, 40, 19, 86, 27, 90]
+            }
+        ]
+    };
+};
+const setChartOptionsLine = () => {
+    const documentStyle = getComputedStyle(document.documentElement);
+    const textColor = documentStyle.getPropertyValue('--text-color');
+    const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
+    const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+
+    return {
+        stacked: false,
+        maintainAspectRatio: false,
+        aspectRatio: 0.6,
+        plugins: {
+            legend: {
+                labels: {
+                    color: textColor
+                }
+            }
+        },
+        scales: {
+            x: {
+                ticks: {
+                    color: textColorSecondary
+                },
+                grid: {
+                    color: surfaceBorder
+                }
+            },
+            y: {
+                type: 'linear',
+                display: true,
+                position: 'left',
+                ticks: {
+                    color: textColorSecondary
+                },
+                grid: {
+                    color: surfaceBorder
+                }
+            },
+            y1: {
+                type: 'linear',
+                display: true,
+                position: 'right',
+                ticks: {
+                    color: textColorSecondary
+                },
+                grid: {
+                    drawOnChartArea: false,
                     color: surfaceBorder
                 }
             }

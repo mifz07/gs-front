@@ -1,4 +1,5 @@
-import { createStore } from 'vuex'
+import { createStore } from 'vuex';
+import { auth } from './auth.module';
 
 const store = createStore({
     state: {
@@ -198,8 +199,8 @@ const store = createStore({
                 }
             },
             {
-                label : "logout",
-                icon : "pi pi-power-off",
+                label : "Logout",
+                icon : "pi pi-power-off", 
                 list : {}
             }
         ]
@@ -207,7 +208,9 @@ const store = createStore({
     mutations: {},
     actions: {},
     getters: {},
-    modules: {},
+    modules: {
+        auth
+    }
 });
 
 export default store;

@@ -3,6 +3,15 @@ import './style.css'
 import "./flags.css";
 import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
+
+// import Lara from './presets/lara'; 
+
+// import the package
+import VueAwesomePaginate from "vue-awesome-paginate";
+
+// import the necessary css file
+// import "vue-awesome-paginate/dist/style.css";
+
 import store from './store';
 
 import App from './App.vue';
@@ -109,8 +118,6 @@ import TreeTable from 'primevue/treetable';
 import TriStateCheckbox from 'primevue/tristatecheckbox';
 import VirtualScroller from 'primevue/virtualscroller';
 
-import VueAwesomePaginate from "vue-awesome-paginate";
-
 import Chart from 'primevue/chart';
 
 const app = createApp(App);
@@ -120,7 +127,7 @@ var api_url = api.split(':');
 var apiUrl = '';
 console.log(api_url[1]);
 if(api_url[1] == '//localhost'){
-    apiUrl = 'http://127.0.0.1:8000/';
+    apiUrl = 'http://127.0.0.1:8000/api/';
 }else{
     apiUrl = 'kosong';
 }
@@ -128,7 +135,7 @@ if(api_url[1] == '//localhost'){
 app.config.globalProperties.apiUrl = apiUrl;
 app.use(store);
 app.use(router);
-app.use(PrimeVue, { unstyled: true, pt: Tailwind });
+app.use(PrimeVue, { unstyled: false, pt: Tailwind, ripple: true  });
 app.use(ConfirmationService);
 app.use(ToastService);
 app.use(DialogService);

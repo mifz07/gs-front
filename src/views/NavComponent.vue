@@ -1,12 +1,12 @@
 <template>
-    <div class="top-0 h-[18vh]">
+    <div class="top-0 h-[100px]">
       <div class="flex place-items-center">
         <section class="relative flex-1 mx-auto">
             <!-- navbar -->
           <nav class="flex justify-between bg-white text-blue-600 drop-shadow-md">
             
             <!-- Responsive navbar -->
-            <a class="px-5 xl:px-12 py-4 flex w-full items-center hidden" href="#">
+            <a class="px-5 xl:px-12 py-4 flex w-full items-center" href="#">
               <!-- <i class="pi pi-shopping-cart"></i> -->
               <span>This Is HIGS Application</span>
               <span class="flex absolute -mt-5 ml-4">

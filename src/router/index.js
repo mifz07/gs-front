@@ -1,13 +1,18 @@
 import { createWebHistory, createRouter } from "vue-router";
 import NotFound from '../views/NotFound.vue';
-
-import Dashboard from '../views/dashboard/Dashboard.vue'
+import Dashboard from '../views/dashboard/Dashboard.vue';
+import LoginPage from '../views/LoginPage.vue';
 
 // MEETING ROOM 
 import RoomManagement from '../views/meetingroom/RoomManagement.vue';
 // import ListRequest from '../views/meetingroom/ListRequest.vue';
 
 const routes = [
+    {
+        path: "/login",
+        component: LoginPage,
+        name: 'login'
+    },
     {
         path: "/:catchAll(.*)",
         component: NotFound,
@@ -36,7 +41,7 @@ const router = createRouter({
 
 //handle unauthorized user
 router.beforeEach((to, from, next) => {
-    const publicPages = ['/login', '/register', '/home'];
+    const publicPages = ['/login', '/register'];
     const authRequired = !publicPages.includes(to.path);
     const loggedIn = localStorage.getItem('user');
   
