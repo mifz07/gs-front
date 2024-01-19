@@ -1,5 +1,16 @@
 <template>
-    <div class="tw-w-full tw-bg-sky-300 tw-rounded-md">
+
+    <div class="tw-w-full text-right tw-mb-2">
+        <button 
+            data-modal-target="default-modal" data-modal-toggle="default-modal"
+            @click="visible = !visible"
+            class="tw-bg-green-500 hover:tw-bg-green-400 tw-text-white tw-font-bold tw-py-2 tw-px-4 tw-rounded tw-inline-flex tw-items-center">
+            <i class="pi pi-plus mr-2"></i>
+            <span>Add</span>
+        </button>
+    </div>
+
+    <div class="tw-w-full tw-bg-sky-200 tw-rounded-md tw-shadow-md">
         <div class="table tw-w-full">
             <table class="tw-w-full">
                 <thead class="tw-text-center tw-font-semibold tw-text-sm">
@@ -12,21 +23,29 @@
                 <tbody class="tw-text-left tw-font-normal tw-text-sm tw-leading-[10px] tw-bg-white">
                     <tr 
                         v-for="(val, key) in props.list_data" :key="val.room_name" 
-                        class="hover:tw-bg-sky-100"
-                        :class="{ 'tw-bg tw-bg-slate-200' : parseInt(key) % 2 == 0 }"
+                        class="hover:tw-bg-sky-100 hover:tw-shadow-md hover:tw-translate-x-1"
+                        :class="{ 'tw-bg tw-bg-slate-100' : parseInt(key) % 2 == 0 }"
                     >
                         <td class="tw-p-2 tw-leading-normal">{{ val.room_name }}</td>
                         <td class="tw-p-2 tw-leading-normal">{{ val.floor }}</td>
                         <td class="tw-p-2 tw-leading-normal">{{ val.facility }}</td>
                         <td class="tw-p-2 tw-leading-normal">{{ val.available_start }}</td>
                         <td class="tw-p-2 tw-leading-normal">{{ val.available_finish }}</td>
-                        <td></td>
+                        <td class="tw-p-2 tw-leading-normal">{{ val.status }}</td>
+                        <td>
+                            <div class="flex tw-align-middle tw-justify-center">
+                                <Button icon="pi pi-eye" severity="info" rounded outlined aria-label="Filter" size="small" style="padding-left: 5px; padding-right: 5px;"/>
+                                <Button v-if="canEdit" icon="pi pi-pencil" severity="warning" rounded outlined aria-label="Filter" size="small" style="padding-left: 5px; padding-right: 5px;"/>
+                                <Button v-if="canApprove" icon="pi pi-check" severity="success" rounded outlined aria-label="Filter" size="small" style="padding-left: 5px; padding-right: 5px;"/>
+                                <Button v-if="canDelete" icon="pi pi-times" severity="danger" rounded outlined aria-label="Filter" size="small" style="padding-left: 5px; padding-right: 5px;"/>
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
-    <div class="tw-mt-3">
+    <div class="tw-mt-3 text-right">
         <vue-awesome-paginate 
             :total-items="totalItems"
             v-model="currentPage"
@@ -34,12 +53,20 @@
             :max-pages-shown="5"
             :on-click="handlePageChange" />
     </div>
+
+    <!-- <div class=""> -->
+        
+    <!-- </div> -->
 </template>
 
 <script setup lang="ts">
-    import { onMounted } from "vue";
+    import { onMounted, ref } from "vue";
+    import Button from 'primevue/button';
 
     const emit = defineEmits(['changePage']);
+
+    const visible = ref(false);
+    
 
     const props = defineProps({
         list_data : Object,
@@ -47,6 +74,9 @@
         currentPage: Number,
         perPage: Number,
         totalItems: Number,
+        canEdit: Boolean,
+        canDelete: Boolean,
+        canApprove: Boolean,
     });
 
     onMounted(() => {
@@ -80,21 +110,21 @@
     width: 40px !important;;
     border-radius: 10px !important;;
     cursor: pointer !important;;
-    background-color: rgb(242, 242, 242) !important;;
-    border: 0.5px solid rgb(104, 93, 93) !important;;
+    background-color: rgb(255, 255, 255) !important;;
+    border: 0.5px solid rgb(97, 220, 254) !important;;
     color: #000000 !important;
     padding-left: 1em !important;
     padding-right: 1em !important;
     justify-content: center !important;
   }
   .paginate-buttons:hover {
-    background-color: #00c3ff !important;
+    background-color: #00a2ff !important;
     color: black !important;
     /* border-color: #34ffdd !important; */
   }
   .active-page {
-    background-color: #0092f3 !important;
-    border: 1px solid #005d9b !important;
+    background-color: #00a2ff !important;
+    border: 1px solid #ffffff !important;
     color: black !important;
   }
   .active-page:hover {

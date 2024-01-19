@@ -36,6 +36,9 @@
             :currentPage="currentPage" 
             :perPage="perPage"
             :totalItems="totalItems"
+            :canEdit=false
+            :canDelete=true
+            :canApprove=true
             @change-page="handlePage"
         ></Table>
     </div>
