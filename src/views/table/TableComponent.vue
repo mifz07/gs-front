@@ -57,14 +57,14 @@
     <!-- Modal -->
     <dialog id="my_modal_4" class="tw-modal">
         <div class="tw-modal-box tw-w-11/12 tw-max-w-3xl">
-            <h3 class="tw-font-bold tw-text-lg">Management Room Meeting</h3>
+            <h3 class="tw-font-bold tw-text-lg">{{ titleModal }}</h3>
             <div class="tw-divider"></div> 
             <div class="tw-mt-3">
                 <label class="tw-form-control tw-w-full tw-max-w-md">
                 <div class="tw-label">
                     <span class="tw-label-text">Room Name</span>
                 </div>
-                <input type="text" placeholder="Room Name" class="tw-input tw-input-bordered tw-input-sm tw-w-full tw-max-w-md" v-model="room.room_name" />
+                <input type="text" placeholder="Room Name" class="tw-input tw-input-bordered tw-input-sm tw-w-full tw-max-w-md" v-model="editVar.room_name" />
                 </label>
             </div>
             <div class="tw-mt-3">
@@ -72,7 +72,7 @@
                 <div class="tw-label">
                     <span class="tw-label-text">Location</span>
                 </div>
-                <input type="text" placeholder="Location" class="tw-input tw-input-bordered tw-input-sm tw-w-full tw-max-w-md" v-model="room.floor" />
+                <input type="text" placeholder="Location" class="tw-input tw-input-bordered tw-input-sm tw-w-full tw-max-w-md" v-model="editVar.floor" />
                 </label>
             </div>
             <div class="tw-mt-3">
@@ -80,7 +80,7 @@
                 <div class="tw-label">
                     <span class="tw-label-text">Facility</span>
                 </div>
-                <input type="text" placeholder="Exp: White board, TV, Large Table" class="tw-input tw-input-bordered tw-input-sm tw-w-full tw-max-w-md" v-model="room.facility" />
+                <input type="text" placeholder="Exp: White board, TV, Large Table" class="tw-input tw-input-bordered tw-input-sm tw-w-full tw-max-w-md" v-model="editVar.facility" />
                 </label>
             </div>
             <div class="tw-mt-3">
@@ -88,7 +88,7 @@
                 <div class="tw-label">
                     <span class="tw-label-text">Status</span>
                 </div>
-                <select class="tw-select tw-select-bordered tw-input-sm w-full max-w-md" v-model="room.status">
+                <select class="tw-select tw-select-bordered tw-input-sm w-full max-w-md" v-model="editVar.status">
                     <option disabled selected>Select Status</option>
                     <option value="available">Available</option>
                     <option value="not_available">Not Available</option>
@@ -102,9 +102,9 @@
                     </div>
                 </label>
                 <div class="tw-w-[15vw]">
-                    <VueDatePicker v-model="room.available_start" time-picker></VueDatePicker>  
+                    <VueDatePicker v-model="editVar.available_start" time-picker></VueDatePicker>  
                 </div>
-                <!-- <input type="text" placeholder="" class="tw-ml-2 tw-input tw-input-bordered tw-input-sm tw-max-w-sm" v-model="room.available_start" />   -->
+                <!-- <input type="text" placeholder="" class="tw-ml-2 tw-input tw-input-bordered tw-input-sm tw-max-w-sm" v-model="editVar.available_start" />   -->
 
                 <label class="tw-ml-4 tw-form-control tw-max-w-sm tw-justify-center">
                     <div class="tw-label">
@@ -112,9 +112,9 @@
                     </div>
                 </label>  
                 <div class="tw-w-[15vw]">
-                    <VueDatePicker v-model="room.available_finish" time-picker></VueDatePicker>  
+                    <VueDatePicker v-model="editVar.available_finish" time-picker></VueDatePicker>  
                 </div>
-                <!-- <input type="text" placeholder="" class="tw-ml-2 tw-input tw-input-bordered tw-input-sm tw-max-w-sm" v-model="room.available_finish" />               -->
+                <!-- <input type="text" placeholder="" class="tw-ml-2 tw-input tw-input-bordered tw-input-sm tw-max-w-sm" v-model="editVar.available_finish" />               -->
             </div>
             <div class="tw-mt-3">
                 <label class="tw-form-control tw-w-full tw-max-w-md">
@@ -166,6 +166,8 @@
             'canEdit',
             'canDelete',
             'canApprove',
+            'editVar',
+            'titleModal'
         ],
         data(){
             return{
@@ -175,15 +177,7 @@
                 image : null,
                 preview_list : [],
                 image_list : [],
-                room : {
-                    room_name: '',
-                    floor: '',
-                    facility: '',
-                    status: '',
-                    available_start: null,
-                    available_finish: null,
-                    image: ''
-                },
+                editVar: this.editVar
             }
         },
         methods: {
@@ -191,7 +185,7 @@
                 this.$emit('changePage', page);
             },
             save(){
-                this.$emit('saveAction', this.room);
+                this.$emit('saveAction', this.editVar);
             },
             previewImage(event) {
                 var input = event.target;
@@ -205,7 +199,7 @@
                         }
                     }
                     this.image=input.files[0];
-                    this.room.image=input.files[0];
+                    this.editVar.picture=input.files[0];
                     reader.readAsDataURL(input.files[0]);
                 }
             },

@@ -36,11 +36,14 @@
             :currentPage="currentPage" 
             :perPage="perPage"
             :totalItems="totalItems"
+            :editVar="room"
+            :titleModal="titleModal"
             :canEdit=false
             :canDelete=true
             :canApprove=true
             @change-page="handlePage"
             @save-action="saveRoom"
+            @delete-action="deleteRoom"
         ></Table>
     </div>
 
@@ -85,6 +88,17 @@ export default {
             // perPage: 5, // adjust perPage as needed
             totalItems: 100,
             keyword: '',
+            titleModal: 'Management Room Meeting',
+            room : {
+                    id: null,
+                    room_name: '',
+                    floor: '',
+                    facility: '',
+                    status: '',
+                    available_start: null,
+                    available_finish: null,
+                    picture: ''
+                },
             tableHeader: {
                 'no' : 'No',
                 'room_name' : "Room Name",
@@ -124,6 +138,9 @@ export default {
             })
         },
         saveRoom(room){
+            console.log(room);
+        },
+        deleteRoom(room){
             console.log(room);
         }
     }
