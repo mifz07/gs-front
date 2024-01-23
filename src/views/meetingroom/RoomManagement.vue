@@ -36,7 +36,11 @@
             :currentPage="currentPage" 
             :perPage="perPage"
             :totalItems="totalItems"
+            :canEdit=false
+            :canDelete=true
+            :canApprove=true
             @change-page="handlePage"
+            @save-action="saveRoom"
         ></Table>
     </div>
 
@@ -119,6 +123,9 @@ export default {
                     this.totalItems = response.data.total;
             })
         },
+        saveRoom(room){
+            console.log(room);
+        }
     }
 
 }
