@@ -42,3 +42,7 @@
     background-color: white;
     color: black;
 }
+
+.swal2-container {
+    z-index: 2000 !important;
+  }

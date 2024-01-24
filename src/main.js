@@ -121,6 +121,8 @@ import TriStateCheckbox from 'primevue/tristatecheckbox';
 import VirtualScroller from 'primevue/virtualscroller';
 
 import Chart from 'primevue/chart';
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 const app = createApp(App);
 // set global variable
@@ -142,13 +144,13 @@ app.use(ConfirmationService);
 app.use(ToastService);
 app.use(DialogService);
 app.use(VueAwesomePaginate);
+app.use(VueSweetalert2);
 app.directive('tooltip', Tooltip);
 app.directive('badge', BadgeDirective);
 app.directive('ripple', Ripple);
 app.directive('styleclass', StyleClass);
 app.directive('focustrap', FocusTrap);
 app.directive('animateonscroll', AnimateOnScroll);
-
 app.component('Accordion', Accordion);
 app.component('AccordionTab', AccordionTab);
 app.component('AutoComplete', AutoComplete);

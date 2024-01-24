@@ -3,7 +3,7 @@
     <div class="tw-w-full text-right tw-mb-2">
         <button 
             data-modal-target="default-modal" data-modal-toggle="default-modal"
-            onclick="my_modal_4.showModal()"
+            @click="loadModal"
             class="tw-bg-green-500 hover:tw-bg-green-400 tw-text-white tw-font-bold tw-py-2 tw-px-4 tw-rounded tw-inline-flex tw-items-center">
             <i class="pi pi-plus mr-2"></i>
             <span>Add</span>
@@ -54,108 +54,15 @@
             :on-click="handlePageChange" />
     </div>
 
-    <!-- Modal -->
-    <dialog id="my_modal_4" class="tw-modal">
-        <div class="tw-modal-box tw-w-11/12 tw-max-w-3xl">
-            <h3 class="tw-font-bold tw-text-lg">{{ titleModal }}</h3>
-            <div class="tw-divider"></div> 
-            <div class="tw-mt-3">
-                <label class="tw-form-control tw-w-full tw-max-w-md">
-                <div class="tw-label">
-                    <span class="tw-label-text">Room Name</span>
-                </div>
-                <input type="text" placeholder="Room Name" class="tw-input tw-input-bordered tw-input-sm tw-w-full tw-max-w-md" v-model="editVar.room_name" />
-                </label>
-            </div>
-            <div class="tw-mt-3">
-                <label class="tw-form-control tw-w-full tw-max-w-md">
-                <div class="tw-label">
-                    <span class="tw-label-text">Location</span>
-                </div>
-                <input type="text" placeholder="Location" class="tw-input tw-input-bordered tw-input-sm tw-w-full tw-max-w-md" v-model="editVar.floor" />
-                </label>
-            </div>
-            <div class="tw-mt-3">
-                <label class="tw-form-control tw-w-full tw-max-w-md">
-                <div class="tw-label">
-                    <span class="tw-label-text">Facility</span>
-                </div>
-                <input type="text" placeholder="Exp: White board, TV, Large Table" class="tw-input tw-input-bordered tw-input-sm tw-w-full tw-max-w-md" v-model="editVar.facility" />
-                </label>
-            </div>
-            <div class="tw-mt-3">
-                <label class="tw-form-control tw-w-full tw-max-w-md">
-                <div class="tw-label">
-                    <span class="tw-label-text">Status</span>
-                </div>
-                <select class="tw-select tw-select-bordered tw-input-sm w-full max-w-md" v-model="editVar.status">
-                    <option disabled selected>Select Status</option>
-                    <option value="available">Available</option>
-                    <option value="not_available">Not Available</option>
-                </select>
-                </label>
-            </div>
-            <div class="tw-w-full flex tw-mt-3">
-                <label class="tw-form-control tw-max-w-sm tw-justify-center">
-                    <div class="tw-label">
-                        <span class="tw-label-text">Available from : </span>
-                    </div>
-                </label>
-                <div class="tw-w-[15vw]">
-                    <VueDatePicker v-model="editVar.available_start" time-picker></VueDatePicker>  
-                </div>
-                <!-- <input type="text" placeholder="" class="tw-ml-2 tw-input tw-input-bordered tw-input-sm tw-max-w-sm" v-model="editVar.available_start" />   -->
-
-                <label class="tw-ml-4 tw-form-control tw-max-w-sm tw-justify-center">
-                    <div class="tw-label">
-                        <span class="tw-label-text">Available to : </span>
-                    </div>
-                </label>  
-                <div class="tw-w-[15vw]">
-                    <VueDatePicker v-model="editVar.available_finish" time-picker></VueDatePicker>  
-                </div>
-                <!-- <input type="text" placeholder="" class="tw-ml-2 tw-input tw-input-bordered tw-input-sm tw-max-w-sm" v-model="editVar.available_finish" />               -->
-            </div>
-            <div class="tw-mt-3">
-                <label class="tw-form-control tw-w-full tw-max-w-md">
-                <div class="tw-label">
-                    <span class="tw-label-text">Picture</span>
-                </div>
-                <input type="file" class="tw-file-input tw-input-sm w-full max-w-xs" 
-                @change="previewImage"    
-                />
-                </label>
-                <div class="tw-border tw-w-1/2 tw-p-2 tw-mt-3" v-if="preview != null">
-                    <p>Image Preview</p>
-                    <template v-if="preview">
-                        <img :src="preview" class="tw-img-fluid tw-mt-2 tw-mb-2" />
-                        <p class="tw-mb-0">file name: {{ image.name }}</p>
-                        <p class="tw-mb-0">size: {{ image.size/1024 }}KB</p>
-                    </template>
-                </div>
-            </div>
-            <div class="tw-modal-action">
-                <button class="tw-btn tw-btn-outline tw-btn-success tw-btn-sm tw-mr-2" @click="save">Success</button>
-                <form method="dialog">
-                    <!-- if there is a button, it will close the modal -->
-                    
-                    <button class="tw-btn tw-btn-outline tw-btn-error tw-btn-sm">Close</button>
-                </form>
-            </div>
-        </div>
-    </dialog>
-
 </template>
 
 <script>
     import { ref } from "vue";
-    import VueDatePicker from '@vuepic/vue-datepicker';
-    import '@vuepic/vue-datepicker/dist/main.css'
 
     export default{
         name: "TableComponent",
         components: {
-            VueDatePicker
+            // VueDatePicker
         },
         props: [
             'list_data',
@@ -166,65 +73,26 @@
             'canEdit',
             'canDelete',
             'canApprove',
-            'editVar',
+            // 'editVar',
             'titleModal'
         ],
         data(){
             return{
                 currentPage: this.currentPage,
                 visible : ref(false),
-                preview : null,
-                image : null,
-                preview_list : [],
-                image_list : [],
-                editVar: this.editVar
+                // editVar: this.editVar
             }
         },
         methods: {
             handlePageChange(page) {
                 this.$emit('changePage', page);
             },
-            save(){
-                this.$emit('saveAction', this.editVar);
+            loadModal(){
+                this.$emit('loadModal');
             },
-            previewImage(event) {
-                var input = event.target;
-                if (input.files) {
-                    var reader = new FileReader();
-                    reader.onload = (e) => {
-                        if(e.target.result == null){
-                            this.preview = [];
-                        }else{
-                            this.preview = e.target.result;
-                        }
-                    }
-                    this.image=input.files[0];
-                    this.editVar.picture=input.files[0];
-                    reader.readAsDataURL(input.files[0]);
-                }
-            },
-            previewMultiImage(event){
-                var input = event.target;
-                var count = input.files.length;
-                var index = 0;
-                if (input.files) {
-                    while(count --) {
-                        var reader = new FileReader();
-                        reader.onload = (e) => {
-                            preview_list.push(e.target.result);
-                        }
-                        image_list.push(input.files[index]);
-                        reader.readAsDataURL(input.files[index]);
-                        index ++;
-                    }
-                }
-            },
-            reset(){
-              this.image = null;
-              this.preview = null;
-              this.image_list = [];
-              this.preview_list = [];
-            },
+            // save(){
+            //     this.$emit('saveAction', this.editVar);
+            // },
         }
     }
 
