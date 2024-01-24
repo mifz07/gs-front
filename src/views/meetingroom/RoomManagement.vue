@@ -131,7 +131,7 @@
                     <span v-if="!loading_save">Success</span>
                     <span class="tw-loading tw-loading-dots tw-loading-sm" v-if="loading_save"></span>
                 </button>
-                <button class="tw-btn tw-btn-outline tw-btn-error tw-btn-sm" @click="visible = !visible">Close</button>
+                <button class="tw-btn tw-btn-outline tw-btn-error tw-btn-sm" @click="close_modal">Close</button>
             </div>
         </div>
     </dialog>
@@ -190,7 +190,7 @@ export default {
                     available_start: null,
                     available_finish: null,
                     picture: ''
-                },
+            },
             tableHeader: {
                 'no' : 'No',
                 'room_name' : "Room Name",
@@ -237,6 +237,24 @@ export default {
         },
         show_modal(){
             this.visible = true;
+        },
+        close_modal(){
+            this.visible = false;
+            this.room = {
+                    id: null,
+                    room_name: '',
+                    floor: '',
+                    facility: '',
+                    status: '',
+                    available_start: null,
+                    available_finish: null,
+                    picture: ''
+            };
+            this.preview = null;
+            this.image = null;
+            this.preview_list = [];
+            this.image_list = [];
+            this.loading_save= false;
         },
         previewImage(event) {
             var input = event.target;
@@ -295,20 +313,20 @@ export default {
             }).then(function(response){
                 this.loading_save = false;
                 if(!response.data.status){
-                    this.$swal('Hello Vue world!!!');
+                    $this.$swal.fire({
+                        icon: 'warning',
+                        title: 'Error',
+                        text: response.data.status,
+                    });
+                }else{
+                    $this.$swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: "Save Room Successfully!",
+                    });
                 }
             }).catch((err) => {
                 this.loading_save = false;
-                // this.room = {
-                //     id: null,
-                //     room_name: '',
-                //     floor: '',
-                //     facility: '',
-                //     status: '',
-                //     available_start: null,
-                //     available_finish: null,
-                //     picture: ''
-                // };
                 this.visible = false;
                 this.$swal.fire({
                     title: 'Error!',
