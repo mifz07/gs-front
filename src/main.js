@@ -31,7 +31,7 @@ import AvatarGroup from 'primevue/avatargroup';
 import Badge from 'primevue/badge';
 import BadgeDirective from "primevue/badgedirective";
 import BlockUI from 'primevue/blockui';
-import Button from 'primevue/button';
+// import Button from 'primevue/button';
 import Breadcrumb from 'primevue/breadcrumb';
 import Calendar from 'primevue/calendar';
 import Card from 'primevue/card';
@@ -135,8 +135,11 @@ if(api_url[1] == '//localhost'){
 }else{
     apiUrl = 'kosong';
 }
+var baseUrl = 'http://localhost:8000/'
+
 
 app.config.globalProperties.apiUrl = apiUrl;
+app.config.globalProperties.baseUrl = baseUrl;
 app.use(store);
 app.use(router);
 app.use(PrimeVue, { unstyled: true, pt: Tailwind, ripple: true  });
@@ -145,6 +148,7 @@ app.use(ToastService);
 app.use(DialogService);
 app.use(VueAwesomePaginate);
 app.use(VueSweetalert2);
+window.Swal =  app.config.globalProperties.$swal;
 app.directive('tooltip', Tooltip);
 app.directive('badge', BadgeDirective);
 app.directive('ripple', Ripple);
@@ -159,7 +163,7 @@ app.component('AvatarGroup', AvatarGroup);
 app.component('Badge', Badge);
 app.component('BlockUI', BlockUI);
 app.component('Breadcrumb', Breadcrumb);
-app.component('Button', Button);
+// app.component('Button', Button);
 app.component('Calendar', Calendar);
 app.component('Card', Card);
 app.component('Carousel', Carousel);

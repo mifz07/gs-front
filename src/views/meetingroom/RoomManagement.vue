@@ -10,25 +10,6 @@
         </small>
     </div>
 
-    <div class="card tw-hidden">
-        <DataTable :value="list_room" lazy stripedRows :size="small" :rows="5" :rowsPerPageOptions="[5, 10, 20, 50]" tableStyle="min-width: 50rem">
-            <Column field="room_name" header="Name"></Column>
-            <Column field="floor" header="Floor"></Column>
-            <Column field="facility" header="Facility"></Column>
-            <Column field="available_start" header="Available For"></Column>
-            <Column field="available_finish" header="Available To"></Column>
-            <Column header="Status">
-                <template #body="{ data }">
-                    <i class="pi" :class="{ 'pi-check-circle text-green-500': data.status == 'available', 'pi-times-circle text-red-500': data.status == 'not available'}"></i>
-                </template>
-                <!-- <template #filter="{ filterModel }">
-                    <label for="verified-filter" class="font-bold"> Verified </label>
-                    <TriStateCheckbox v-model="filterModel.value" inputId="verified-filter" />
-                </template> -->
-            </Column>
-        </DataTable>
-    </div>
-
     <div class="mt-3">
         <TableComponent 
             :list_data="list_room" 
@@ -36,13 +17,14 @@
             :currentPage="currentPage" 
             :perPage="perPage"
             :totalItems="totalItems"
-            :editVar="room"
             :titleModal="titleModal"
-            :canEdit=false
+            :canEdit=true
             :canDelete=true
-            :canApprove=true
+            :canApprove=false
             @change-page="handlePage"
             @load-modal="show_modal"
+            @show-modal="change_data"
+            @hapus-action="deleteRoom"
         ></TableComponent>
     </div>
 
@@ -56,7 +38,7 @@
                 <div class="tw-label">
                     <span class="tw-label-text">Room Name</span>
                 </div>
-                <input type="text" placeholder="Room Name" class="tw-input tw-input-bordered tw-input-sm tw-w-full tw-max-w-md" v-model="room.room_name" />
+                <input type="text" placeholder="Room Name" class="tw-input tw-input-bordered tw-input-sm tw-w-full tw-max-w-md" v-model="room.room_name" :disabled="!type_modal"/>
                 </label>
             </div>
             <div class="tw-mt-3">
@@ -64,7 +46,7 @@
                 <div class="tw-label">
                     <span class="tw-label-text">Location</span>
                 </div>
-                <input type="text" placeholder="Location" class="tw-input tw-input-bordered tw-input-sm tw-w-full tw-max-w-md" v-model="room.floor" />
+                <input type="text" placeholder="Location" class="tw-input tw-input-bordered tw-input-sm tw-w-full tw-max-w-md" v-model="room.floor" :disabled="!type_modal" />
                 </label>
             </div>
             <div class="tw-mt-3">
@@ -72,7 +54,7 @@
                 <div class="tw-label">
                     <span class="tw-label-text">Facility</span>
                 </div>
-                <input type="text" placeholder="Exp: White board, TV, Large Table" class="tw-input tw-input-bordered tw-input-sm tw-w-full tw-max-w-md" v-model="room.facility" />
+                <input type="text" placeholder="Exp: White board, TV, Large Table" class="tw-input tw-input-bordered tw-input-sm tw-w-full tw-max-w-md" v-model="room.facility" :disabled="!type_modal" />
                 </label>
             </div>
             <div class="tw-mt-3">
@@ -80,7 +62,7 @@
                 <div class="tw-label">
                     <span class="tw-label-text">Status</span>
                 </div>
-                <select class="tw-select tw-select-bordered tw-input-sm w-full max-w-md" v-model="room.status">
+                <select class="tw-select tw-select-bordered tw-input-sm w-full max-w-md" v-model="room.status" :disabled="!type_modal">
                     <option disabled selected>Select Status</option>
                     <option value="available">Available</option>
                     <option value="not_available">Not Available</option>
@@ -94,7 +76,7 @@
                     </div>
                 </label>
                 <div class="tw-w-[15vw]">
-                    <VueDatePicker v-model="room.available_start" time-picker></VueDatePicker>  
+                    <VueDatePicker v-model="room.available_start" time-picker :disabled="!type_modal"></VueDatePicker>  
                 </div>
                 <!-- <input type="text" placeholder="" class="tw-ml-2 tw-input tw-input-bordered tw-input-sm tw-max-w-sm" v-model="room.available_start" />   -->
 
@@ -104,7 +86,7 @@
                     </div>
                 </label>  
                 <div class="tw-w-[15vw]">
-                    <VueDatePicker v-model="room.available_finish" time-picker></VueDatePicker>  
+                    <VueDatePicker v-model="room.available_finish" time-picker :disabled="!type_modal"></VueDatePicker>  
                 </div>
                 <!-- <input type="text" placeholder="" class="tw-ml-2 tw-input tw-input-bordered tw-input-sm tw-max-w-sm" v-model="room.available_finish" />               -->
             </div>
@@ -115,14 +97,15 @@
                 </div>
                 <input type="file" class="tw-file-input tw-input-sm w-full max-w-xs" 
                 @change="previewImage"    
+                :disabled="!type_modal"
                 />
                 </label>
                 <div class="tw-border tw-w-1/2 tw-p-2 tw-mt-3" v-if="preview != null">
                     <p>Image Preview</p>
                     <template v-if="preview">
                         <img :src="preview" class="tw-img-fluid tw-mt-2 tw-mb-2" />
-                        <p class="tw-mb-0">file name: {{ image.name }}</p>
-                        <p class="tw-mb-0">size: {{ image.size/1024 }}KB</p>
+                        <!-- <p class="tw-mb-0">file name: {{ image.name }}</p> -->
+                        <!-- <p class="tw-mb-0">size: {{ image.size/1024 }}KB</p> -->
                     </template>
                 </div>
             </div>
@@ -143,6 +126,8 @@ import axios from 'axios';
 import { ref } from 'vue';
 import authHeader from "../../service/auth-header";
 import TableComponent from "../table/TableComponent.vue";
+import {Blob} from 'buffer';
+
 
 // import { FwbPagination } from 'flowbite-vue'
 import Paginator from 'primevue/paginator';
@@ -167,7 +152,7 @@ export default {
     },
     data() {
         return {
-            laravelData: ref(),
+            // laravelData: ref(),
             currentPage: 1,
             perPage: 5,
             total: 20,
@@ -200,12 +185,13 @@ export default {
                 'available_to' : "Available To",
                 'action' : 'Action'
             },
-            visible: false,
-            preview : null,
-            image : null,
-            preview_list : [],
-            image_list : [],
-            loading_save: false,
+            visible: false, // for modal
+            preview : null, // for image preview
+            image : null, // for hold data image
+            preview_list : [], // for multiple image preview
+            image_list : [], // for hold multiple data image
+            loading_save: false, // loading for button save
+            type_modal: true // for type modal (detail, edit)
         };
     },
     beforeCreate() {
@@ -216,7 +202,7 @@ export default {
     },
     methods: {
         handlePage(page) {
-            console.log('ini dari emit', page)
+            // get list room data
             this.currentPage = page
             axios({
                     method: 'get',
@@ -235,7 +221,7 @@ export default {
                     this.totalItems = response.data.total;
             })
         },
-        show_modal(){
+        show_modal(){ // for create new room
             this.visible = true;
         },
         close_modal(){
@@ -255,21 +241,36 @@ export default {
             this.preview_list = [];
             this.image_list = [];
             this.loading_save= false;
+            this.type_modal = true;
         },
-        previewImage(event) {
-            var input = event.target;
-            if (input.files) {
-                var reader = new FileReader();
-                reader.onload = (e) => {
-                    if(e.target.result == null){
-                        this.preview = [];
-                    }else{
-                        this.preview = e.target.result;
-                    }
+        previewImage(event, path) {
+            if(!event){
+                this.preview = this.baseUrl + 'image/meeting_room/' + path;
+                if (this.preview) {
+                    const filename = this.preview.split('/').pop();
+                    const imageFile = new File([Blob], filename, { type: 'image/jpeg,jpg,png' });
+                    
+                    var reader = new FileReader();
+                    this.image = imageFile;
+                    // this.room.picture = imageFile;
+                    // console.log(this.room.picture);
+                    reader.readAsDataURL(imageFile);
                 }
-                this.image=input.files[0];
-                this.room.picture=input.files[0];
-                reader.readAsDataURL(input.files[0]);
+            }else{
+                var input = event.target;
+                if (input.files) {
+                    var reader = new FileReader();
+                    reader.onload = (e) => {
+                        if(e.target.result == null){
+                            this.preview = [];
+                        }else{
+                            this.preview = e.target.result;
+                        }
+                    }
+                    this.image=input.files[0];
+                    this.room.picture=input.files[0];
+                    reader.readAsDataURL(input.files[0]);
+                }
             }
         },
         previewMultiImage(event){
@@ -294,6 +295,29 @@ export default {
             this.image_list = [];
             this.preview_list = [];
         },
+        change_data(data){ // for view, edit room
+            this.type_modal = data.type;
+            var datas = data.data;
+            var start = datas.available_start.split(':');
+            var finish = datas.available_finish.split(':');
+            var start_hour = start[0];
+            var start_min = start[1];
+            var finish_hour = finish[0];
+            var finis_min = finish[1];
+            this.room = {
+                    id: datas.id,
+                    room_name: datas.room_name,
+                    floor: datas.floor,
+                    facility: datas.facility,
+                    status: datas.status,
+                    available_start: { hours: start_hour, minutes: start_min },
+                    available_finish: { hours: finish_hour, minutes: finis_min },
+                    picture: datas.picture
+            };
+            this.visible = true;
+            this.previewImage('', this.room.picture)
+
+        },
         saveRoom(){
             this.loading_save = true;
             var formData = new FormData();
@@ -301,47 +325,90 @@ export default {
             formData.append("room_name", this.room.room_name);
             formData.append("floor", this.room.floor);
             formData.append("facility", this.room.facility);
-            formData.append("status", this.room.status);
-            formData.append("available_start", this.room.available_start.hours +':'+ this.room.available_start.minutes);
-            formData.append("available_finish", this.room.available_finish.hours +':'+ this.room.available_finish.minutes);
+            formData.append("status", this.room.status);            
+            formData.append("available_start", this.room.available_start.hours +':'+ (this.room.available_start.minutes < 10 ? '0' + this.room.available_start.minutes : this.room.available_start.minutes) );
+            formData.append("available_finish", this.room.available_finish.hours +':'+ (this.room.available_finish.minutes < 10 ? '0' + this.room.available_finish.minutes : this.room.available_finish.minutes) );
+
+            if(!this.room.id){
+                var method = 'post';
+                var url = this.apiUrl + 'meeting_room';
+            }else{
+                var method = 'post';
+                var url = this.apiUrl + 'meeting_room/' + this.room.id+'?_method=PUT';
+            }
 
             axios({
-                method: 'post',
-                url: this.apiUrl + 'meeting_room',
+                method: method,
+                url: url,
                 headers: authHeader(), 
                 data: formData
-            }).then(function(response){
-                this.loading_save = false;
+            }).then((response) => {
+                // console.log(response);
                 if(!response.data.status){
-                    $this.$swal.fire({
+                    Swal.fire({
                         icon: 'warning',
                         title: 'Error',
                         text: response.data.status,
                     });
+                    this.loading_save = false;
                 }else{
-                    $this.$swal.fire({
+                    this.handlePage(this.currentPage);
+                    Swal.fire({
                         icon: 'success',
                         title: 'Success',
                         text: "Save Room Successfully!",
+                    })
+                    .then((result) => {
+                        if(result)
+                            this.close_modal();
                     });
                 }
-            }).catch((err) => {
-                this.loading_save = false;
-                this.visible = false;
-                this.$swal.fire({
-                    title: 'Error!',
-                    text: err.response.data.message,
-                    icon: 'error',
-                    confirmButtonText: 'Ok'
-                }).then((result) => {
-                    this.visible = true;
-                    this.$swal.close();
-                });
             });
         },
         deleteRoom(room){
-            
-        }
+            Swal.fire({
+                icon: 'warning',
+                tittle: 'Warning',
+                text: 'Are you sure want to delete this room?',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if(result.isConfirmed){
+
+                    axios({
+                        method: 'delete',
+                        url: this.apiUrl + 'meeting_room/' + room.id,
+                        headers: authHeader(),
+                    }).then((response) => {
+                        if(response.data.status)
+                        {
+                            this.handlePage(this.currentPage);
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: "Delete Room Successfully!"
+                            });
+                        }else{
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!!',
+                                text: 'Delete Data Failed'
+                            })
+                        }
+                    }).catch((error) => {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: error.response.message
+                        });
+                    })
+                }
+            })
+        },
+
     }
 
 }

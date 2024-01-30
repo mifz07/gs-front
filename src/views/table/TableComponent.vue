@@ -34,10 +34,10 @@
                         <td class="tw-p-2 tw-leading-normal">{{ val.status }}</td>
                         <td>
                             <div class="flex tw-align-middle tw-justify-center">
-                                <Button icon="pi pi-eye" severity="info" rounded outlined aria-label="Filter" size="small" style="padding-left: 5px; padding-right: 5px;"/>
-                                <Button v-if="canEdit" icon="pi pi-pencil" severity="warning" rounded outlined aria-label="Filter" size="small" style="padding-left: 5px; padding-right: 5px;"/>
-                                <Button v-if="canApprove" icon="pi pi-check" severity="success" rounded outlined aria-label="Filter" size="small" style="padding-left: 5px; padding-right: 5px;"/>
-                                <Button v-if="canDelete" icon="pi pi-times" severity="danger" rounded outlined aria-label="Filter" size="small" style="padding-left: 5px; padding-right: 5px;"/>
+                                <button class="tw-btn tw-btn-outline tw-btn-info tw-btn-xs" @click="show_modal(false, val)"><i class="pi pi-eye"></i></button>
+                                <button v-if="canEdit" class="tw-btn tw-btn-outline tw-btn-warning tw-btn-xs ml-1" @click="show_modal(true, val)"><i class="pi pi-pencil"></i></button>
+                                <button v-if="canApprove" class="tw-btn tw-btn-outline tw-btn-success tw-btn-xs tw-ml-1" @click="approve(val)"><i class="pi pi-check"></i></button>
+                                <button v-if="canDelete" class="tw-btn tw-btn-outline tw-btn-error tw-btn-xs ml-1" @click="hapus(val)"><i class="pi pi-times"></i></button>
                             </div>
                         </td>
                     </tr>
@@ -48,7 +48,7 @@
     <div class="tw-mt-3 text-right">
         <vue-awesome-paginate 
             :total-items="totalItems"
-            v-model="currentPage"
+            v-model="curPage"
             :items-per-page="perPage"
             :max-pages-shown="5"
             :on-click="handlePageChange" />
@@ -60,6 +60,7 @@
     import { ref } from "vue";
 
     export default{
+        emits: ['changePage', 'loadModal', 'showModal'],
         name: "TableComponent",
         components: {
             // VueDatePicker
@@ -78,7 +79,7 @@
         ],
         data(){
             return{
-                currentPage: this.currentPage,
+                curPage: this.currentPage,
                 visible : ref(false),
                 // editVar: this.editVar
             }
@@ -90,9 +91,20 @@
             loadModal(){
                 this.$emit('loadModal');
             },
-            // save(){
-            //     this.$emit('saveAction', this.editVar);
-            // },
+            show_modal(type, value){
+                var data = {
+                    'type' : type,
+                    'data' : value
+                };
+                this.$emit('showModal', data);
+            },
+            approve(){
+                this.$emit('approveAction', this.editVar);
+            },
+            hapus(value){
+                this.$emit('hapusAction', value)
+            }
+            
         }
     }
 
@@ -192,17 +204,17 @@
     justify-content: center !important;
   }
   .paginate-buttons:hover {
-    background-color: #00a2ff !important;
+    background-color: #8de2fceb !important;
     color: black !important;
     /* border-color: #34ffdd !important; */
   }
   .active-page {
-    background-color: #00a2ff !important;
-    border: 1px solid #ffffff !important;
+    background-color: #37f6ff78 !important;
+    border: 1px solid #d8d8d8b8 !important;
     color: black !important;
   }
   .active-page:hover {
-    background-color: #2988c8 !important;
+    background-color: #8de2fceb !important;
   }
   .text-green-500 {
     --tw-text-opacity: 1;
