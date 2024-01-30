@@ -44,7 +44,7 @@
     watch: {
         $route(curRoute) {
             this.pathName = curRoute.name;
-            console.log(this.pathName);
+            // console.log(this.pathName);
         },
     }
   }

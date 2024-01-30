@@ -129,7 +129,7 @@ const app = createApp(App);
 var api = window.location.origin
 var api_url = api.split(':');
 var apiUrl = '';
-console.log(api_url[1]);
+// console.log(api_url[1]);
 if(api_url[1] == '//localhost'){
     apiUrl = 'http://127.0.0.1:8000/api/';
 }else{

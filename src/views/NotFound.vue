@@ -13,7 +13,7 @@
                     You may have mistyped the address or the page may have moved.
                 </div>
                 <router-link to="/">
-                    <a href="#" class="tw-border tw-border-white tw-rounded tw-p-4">Go Home</a>
+                    <a href="#" class="tw-border tw-border-white tw-rounded tw-p-4 hover:tw-text-sky-500 hover:tw-shadow-sm hover:tw-border-sky-300 hover:tw-bg-gray-100">Go Home</a>
                 </router-link>
             </div>
         </div>
