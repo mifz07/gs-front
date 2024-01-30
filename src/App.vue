@@ -4,7 +4,11 @@
     <LoginPage></LoginPage>
   </div>
 
-  <div v-if="pathName != 'login'">
+  <div v-if="pathName == 'NotFound'">
+    <NotFound></NotFound>
+  </div>
+
+  <div v-if="pathName != 'login' &&  pathName != 'NotFound'" class="container" id="mainContainer">
     <SideComponent></SideComponent>
 
     <div class="layout-main">
@@ -22,6 +26,7 @@
   import NavComponent from './views/NavComponent.vue';
   import SideComponent from './views/SideComponent.vue';
   import LoginPage from './views/LoginComponent.vue';
+  import NotFound from './views/NotFound.vue';
   import {ref} from 'vue';
 
   // const pathName = ref(null);
@@ -34,7 +39,7 @@
       }
     },
     components: {
-      NavComponent, SideComponent, LoginPage
+      NavComponent, SideComponent, LoginPage, NotFound
     },
     watch: {
         $route(curRoute) {
